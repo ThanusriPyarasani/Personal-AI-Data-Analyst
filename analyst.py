@@ -56,29 +56,39 @@ def load_data(file_or_path) -> pd.DataFrame:
 def _detect_column_types(df: pd.DataFrame):
     numeric = df.select_dtypes(include=[np.number]).columns.tolist()
     datetime = []
+
     # try to infer datetime columns
     for c in df.columns:
         if pd.api.types.is_datetime64_any_dtype(df[c]):
             datetime.append(c)
         else:
-            # try to parse small sample as date
             try:
                 sample = df[c].dropna().iloc[:10]
 
-if len(sample) > 0:
-    parsed = pd.to_datetime(
-        sample,
-        errors="coerce",
-        format="mixed"
-    )
+                if len(sample) > 0:
+                    parsed = pd.to_datetime(
+                        sample,
+                        errors="coerce",
+                        format="mixed"
+                    )
 
-    if parsed.notna().mean() > 0.7:
-        datetime.append(c)
+                    if parsed.notna().mean() > 0.7:
+                        datetime.append(c)
+
             except Exception:
                 pass
-    # categoricals: low cardinality non-numeric
-    categorical = [c for c in df.columns if c not in numeric + datetime and df[c].nunique(dropna=True) <= 50]
-    return {"numeric": numeric, "datetime": datetime, "categorical": categorical}
+
+    categorical = [
+        c for c in df.columns
+        if c not in numeric + datetime
+        and df[c].nunique(dropna=True) <= 50
+    ]
+
+    return {
+        "numeric": numeric,
+        "datetime": datetime,
+        "categorical": categorical
+    }
 
 def suggest_prompts(df: pd.DataFrame, max_suggestions: int = 8):
     """
