@@ -24,8 +24,8 @@ An AI-powered data analysis platform that automatically generates dataset insigh
 
 ## Live Demo
 
-[https://your-streamlit-url.streamlit.app](https://personal-ai-data-analystgit-2e5v8ouqj4dgkezkgpgyyk.streamlit.app/)
+https://personal-ai-data-analystgit-2e5v8ouqj4dgkezkgpgyyk.streamlit.app/
 
 ## GitHub Repository
 
-https://github.com/ThanusriPyarasani/Personal-AI-Data-Analyst
+https://github.com/ThanusriPyarasani/Personal-AI-Data-Analyst.git
