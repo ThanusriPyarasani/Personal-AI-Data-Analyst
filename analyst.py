@@ -63,10 +63,17 @@ def _detect_column_types(df: pd.DataFrame):
         else:
             # try to parse small sample as date
             try:
-                sample = df[c].dropna().astype(str).iloc[:20]
-                parsed = pd.to_datetime(sample, errors="coerce")
-                if parsed.notna().sum() >= max(1, min(5, len(sample)//2)):
-                    datetime.append(c)
+                sample = df[c].dropna().iloc[:10]
+
+if len(sample) > 0:
+    parsed = pd.to_datetime(
+        sample,
+        errors="coerce",
+        format="mixed"
+    )
+
+    if parsed.notna().mean() > 0.7:
+        datetime.append(c)
             except Exception:
                 pass
     # categoricals: low cardinality non-numeric
